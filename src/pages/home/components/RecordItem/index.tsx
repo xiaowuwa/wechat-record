@@ -8,6 +8,8 @@ import {
 } from '../../../../config/style/globalCss';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../../../../config/style/color';
+import {IRecordItem, IRecordItemList} from '../../model';
+import dayjs from 'dayjs';
 
 const css = StyleSheet.create({
   layoutMargin: {
@@ -19,7 +21,7 @@ const css = StyleSheet.create({
     paddingRight: 16,
   },
   groupItem: {
-    marginTop: 12,
+    marginBottom: 12,
     borderRadius: 12,
     ...bgCss.white,
   },
@@ -37,41 +39,51 @@ const css = StyleSheet.create({
   },
 });
 
-function Index(): JSX.Element {
+interface IProps {
+  data: IRecordItem;
+}
+
+function Index({data}: IProps): JSX.Element {
   return (
     <View style={[css.groupItem, css.layoutMargin]}>
       <View style={[css.itemHeader, css.layoutPadding]}>
-        <Text style={textCSS.black}>3月1日</Text>
+        <Text style={textCSS.black}>{dayjs(data.date).format('MM-DD')}</Text>
         <View style={[flexCSS.flexRow]}>
           <Text style={[textCSS.black, fontSizeCSS.sm]}>
-            支出：<Text>260</Text>
+            支出：<Text>{data.paid}</Text>
           </Text>
           <Text style={[textCSS.black, fontSizeCSS.sm, {marginLeft: 16}]}>
-            入账：<Text>1900</Text>
+            入账：<Text>{data.income}</Text>
           </Text>
         </View>
       </View>
-      <View style={[css.layoutPadding, flexCSS.crossCenter]}>
-        <View style={{marginRight: 12}}>
-          <Icon name="pay-circle1" size={32} color={Color.primary} />
+      {data.list.map(i => renderItem(i))}
+    </View>
+  );
+}
+
+function renderItem(data: IRecordItemList) {
+  return (
+    <View style={[css.layoutPadding, flexCSS.crossCenter]}>
+      <View style={{marginRight: 12}}>
+        <Icon name="pay-circle1" size={32} color={Color.primary} />
+      </View>
+      <View
+        style={[
+          flexCSS.mainBetween,
+          css.firstItem,
+          {flex: 1, paddingTop: 10, paddingBottom: 10},
+        ]}>
+        <View>
+          <View>
+            <Text style={[textCSS.black, fontSizeCSS.lg]}>{data.label}</Text>
+          </View>
+          <Text style={{...fontSizeCSS.xs, marginTop: 6}}>
+            {data.time} | {data.merchant}
+          </Text>
         </View>
-        <View
-          style={[
-            flexCSS.mainBetween,
-            css.firstItem,
-            {flex: 1, paddingTop: 10, paddingBottom: 10},
-          ]}>
-          <View>
-            <View>
-              <Text style={[textCSS.black, fontSizeCSS.lg]}>交通</Text>
-            </View>
-            <Text style={{...fontSizeCSS.xs, marginTop: 6}}>
-              06:00：00 | 坐地铁
-            </Text>
-          </View>
-          <View>
-            <Text style={[textCSS.black, fontSizeCSS.lg]}>-￥2.00</Text>
-          </View>
+        <View>
+          <Text style={[textCSS.black, fontSizeCSS.lg]}>-￥{data.paid}</Text>
         </View>
       </View>
     </View>

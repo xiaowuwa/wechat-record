@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  FlatList,
   StatusBar,
   StyleSheet,
   Text,
@@ -11,6 +12,7 @@ import {bgCss, textCSS, flexCSS} from '../../config/style/globalCss';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import RecordItem from './components/RecordItem/index';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {IRecordItem} from './model';
 
 const css = StyleSheet.create({
   layoutMargin: {
@@ -34,7 +36,8 @@ const css = StyleSheet.create({
   },
 
   mainContainer: {
-    backgroundColor: Colors.gray,
+    backgroundColor: 'f6f6f6',
+    marginTop: 12,
   },
 
   groupItem: {
@@ -42,6 +45,93 @@ const css = StyleSheet.create({
     ...bgCss.white,
   },
 });
+
+const records: IRecordItem[] = [
+  {
+    id: 1,
+    date: new Date(),
+    paid: 10,
+    income: 20,
+    list: [
+      {
+        label: '餐饮',
+        merchant: '肯德基',
+        paid: 2,
+        time: '16:00',
+      },
+    ],
+  },
+  {
+    id: 2,
+    date: new Date(),
+    paid: 10,
+    income: 20,
+    list: [
+      {
+        label: '交通',
+        merchant: '深圳地铁',
+        paid: 2,
+        time: '16:00',
+      },
+    ],
+  },
+  {
+    id: 3,
+    date: new Date(),
+    paid: 10,
+    income: 20,
+    list: [
+      {
+        label: '餐饮',
+        merchant: '麦当劳',
+        paid: 2,
+        time: '16:00',
+      },
+    ],
+  },
+  {
+    id: 4,
+    date: new Date(),
+    paid: 10,
+    income: 20,
+    list: [
+      {
+        label: '其它',
+        merchant: '美宜佳',
+        paid: 2,
+        time: '16:00',
+      },
+    ],
+  },
+  {
+    id: 5,
+    date: new Date(),
+    paid: 10,
+    income: 20,
+    list: [
+      {
+        label: '餐饮',
+        merchant: '粒上皇',
+        paid: 2,
+        time: '16:00',
+      },
+    ],
+  },
+  {
+    id: 6,
+    date: new Date(),
+    paid: 10,
+    income: 20,
+    list: [
+      {
+        label: '交通',
+        merchant: '深圳通',
+        paid: 2,
+        time: '16:00',
+      },
+    ],
+  },
+];
 
 function Index(): JSX.Element {
   return (
@@ -74,9 +164,13 @@ function Index(): JSX.Element {
         </View>
       </View>
 
-      <View style={css.mainContainer}>
-        <View style={{backgroundColor: '#f6f6f6'}}>
-          <RecordItem />
+      <View style={[css.mainContainer, {paddingBottom: 90}]}>
+        <View>
+          <FlatList
+            data={records}
+            renderItem={i => <RecordItem data={i.item} />}
+            keyExtractor={i => i.id.toString()}
+          />
         </View>
       </View>
     </>
